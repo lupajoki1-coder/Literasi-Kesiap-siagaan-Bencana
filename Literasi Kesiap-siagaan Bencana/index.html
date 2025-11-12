@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth select-none">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bumi Kita yang Dinamis: Memahami Megathrust</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Inter & Merriweather -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- BASE STYLES --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* teal-50 */
+            color: #334155; /* slate-700 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Kartu Konten */
+        .content-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: all 0.3s ease-in-out;
+            border: 1px solid #ccfbf1;
+            overflow: hidden;
+        }
+        .content-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            border-color: #99f6e4;
+        }
+
+        /* --- ACCORDION STYLES --- */
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f0fdfa;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #0f766e; /* teal-700 */
+        }
+        details > summary:hover {
+            background-color: #fef3c7; /* amber-50 */
+            color: #b45309; /* amber-700 */
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details > summary .icon {
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 1rem;
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        details[open] > summary .icon {
+            transform: rotate(180deg);
+        }
+        details > div.accordion-content {
+            padding: 1.5rem;
+            background-color: #fff;
+            line-height: 1.7;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        /* --- NAVIGATION STYLES --- */
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            color: #64748b;
+        }
+        .nav-link.active {
+            border-bottom-color: #f59e0b;
+            color: #0f766e;
+        }
+        .nav-link:hover {
+            color: #0d9488;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        .prose-custom h2 {
+            font-family: 'Merriweather', serif;
+            color: #0f766e;
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            line-height: 1.3;
+        }
+        .prose-custom h3 {
+            font-family: 'Inter', sans-serif;
+            color: #d97706;
+            font-weight: 600;
+            font-size: 1.35rem;
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+        }
+        .prose-custom p {
+            line-height: 1.8;
+            margin-bottom: 1.25em;
+            font-size: 1.05rem;
+        }
+        
+        /* --- TABLE STYLES --- */
+        .table-container {
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            margin: 2rem 0;
+        }
+        .prose-custom table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .prose-custom th {
+            background-color: #ccfbf1;
+            color: #115e59;
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+        }
+        .prose-custom td {
+            padding: 1rem;
+            border-top: 1px solid #f1f5f9;
+            vertical-align: top;
+        }
+        .prose-custom tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* --- HIGHLIGHT BOX --- */
+        .highlight-box {
+            background: linear-gradient(to right, #fffbeb, #fff);
+            border-left: 5px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        /* --- PROTECTION WARNING --- */
+        #protection-warning {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(15, 118, 110, 0.95);
+            color: white;
+            padding: 1.5rem 2.5rem;
+            border-radius: 1rem;
+            z-index: 9999;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pop-up Peringatan Proteksi -->
+    <div id="protection-warning">
+        <div class="text-2xl mb-2">🌱</div>
+        <div>Konten ini dilindungi untuk tujuan edukasi.<br>Terima kasih telah membaca dengan bijak.</div>
+    </div>
+
+    <!-- 1. NAVIGATION -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-teal-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2">
+                    <div class="bg-teal-100 p-2 rounded-full text-teal-600">
+                        <!-- Icon Daun/Bumi -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-700">Harmoni<span class="text-teal-600">Bumi</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#sapaan" class="nav-link text-sm uppercase tracking-wide py-2 active">Sapaan</a>
+                    <a href="#cerita" class="nav-link text-sm uppercase tracking-wide py-2">Cerita Alam</a>
+                    <a href="#fakta" class="nav-link text-sm uppercase tracking-wide py-2">Fakta</a>
+                    <a href="#bersiap" class="nav-link text-sm uppercase tracking-wide py-2">Bersiap</a>
+                    <a href="#kamus" class="nav-link text-sm uppercase tracking-wide py-2">Kamus</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-teal-600 p-2 rounded hover:bg-teal-50">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-teal-50 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="#sapaan" class="block px-3 py-3 rounded-md text-base font-medium text-slate-600 hover:bg-teal-50 hover:text-teal-700">Sapaan</a>
+                <a href="#cerita" class="block px-3 py-3 rounded-md text-base font-medium text-slate-600 hover:bg-teal-50 hover:text-teal-700">Cerita Alam</a>
+                <a href="#fakta" class="block px-3 py-3 rounded-md text-base font-medium text-slate-600 hover:bg-teal-50 hover:text-teal-700">Fakta</a>
+                <a href="#bersiap" class="block px-3 py-3 rounded-md text-base font-medium text-slate-600 hover:bg-teal-50 hover:text-teal-700">Bersiap</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. HERO SECTION -->
+    <header class="relative h-[500px] flex items-center justify-center overflow-hidden">
+        <!-- Image: Pesisir Pantai (Updated URL) -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1468476396571-4d6f2a427ee7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+                 alt="Pesisir pantai yang tenang dan indah" 
+                 class="w-full h-full object-cover brightness-75">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-teal-900/40 to-teal-900/80 z-10"></div>
+        
+        <div class="relative z-20 text-center px-4 max-w-3xl mx-auto">
+            <span class="inline-block py-1 px-4 rounded-full bg-amber-400/20 border border-amber-400 text-amber-200 text-xs font-bold tracking-widest uppercase mb-4 backdrop-blur-sm">
+                Edukasi Lingkungan
+            </span>
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight font-serif shadow-sm">
+                Mengenal Tetangga Kita:<br>Sang Megathrust
+            </h1>
+            <p class="text-lg md:text-xl text-teal-50 font-light">
+                Sebuah perjalanan memahami napas bumi, mengubah ketakutan menjadi kesiapan bersama.
+            </p>
+            <div class="mt-8 flex justify-center gap-3 text-sm text-teal-100/80">
+                <span class="flex items-center gap-1">🕒 Baca: 7 Menit</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 3. MAIN CONTENT -->
+    <main class="max-w-4xl mx-auto px-4 py-12 space-y-12 -mt-20 relative z-30">
+
+        <!-- Section 1: Sapaan -->
+        <section id="sapaan" class="content-card p-8 md:p-10 prose-custom">
+            <h2>Hai, Mari Duduk Sejenak.</h2>
+            <p>
+                Mungkin belakangan ini, linimasa media sosial kita dipenuhi dengan satu kata yang terdengar cukup mengintimidasi: <strong>"Megathrust"</strong>. Ditambah lagi dengan pernyataan resmi yang menyebutkan "tinggal menunggu waktu", rasanya wajar jika jantung kita berdegup sedikit lebih kencang.
+            </p>
+            <p>
+                Ketakutan itu manusiawi. Tapi seringkali, ketakutan muncul karena kita belum benar-benar kenal.
+            </p>
+            <p>
+                Artikel ini hadir bukan untuk menambah beban pikiran kita. Justru sebaliknya, kita akan mencoba mematikan "alarm panik" sejenak dan menyalakan rasa ingin tahu. Mari kita ubah narasi menyeramkan itu menjadi cerita tentang rumah kita sendiri—Planet Bumi yang luar biasa dinamis.
+            </p>
+        </section>
+
+        <!-- Section 2: Cerita Alam -->
+        <section id="cerita" class="content-card p-0 prose-custom">
+            <!-- Image: Tekstur Batuan (Updated URL) -->
+            <div class="h-64 w-full overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1586042091284-bd35c8c1d917?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80" 
+                     alt="Kekuatan alam dan batuan tebing" 
+                     class="w-full h-full object-cover object-center transform hover:scale-105 transition duration-700">
+            </div>
+            
+            <div class="p-8 md:p-10">
+                <h2>Bukan Monster, Tapi Napas Bumi</h2>
+                <p>
+                    Pertama-tama, mari kita sepakati satu hal: Megathrust bukanlah nama monster laut. Itu adalah nama sebuah "ruang pertemuan".
+                </p>
+                <p>
+                    Bayangkan bumi kita ini seperti puzzle raksasa yang potongannya (lempeng) tidak pernah diam. Di sebelah barat Sumatera dan selatan Jawa, ada dua potongan puzzle yang saling berdesakan. Potongan Lempeng Indo-Australia yang aktif, menyusup ke bawah Lempeng Eurasia. Area pertemuan itulah yang kita sebut Megathrust.
+                </p>
+
+                <!-- Highlight Box -->
+                <div class="highlight-box">
+                    <h3 class="!mt-0 flex items-center gap-2">
+                        <span class="text-2xl">📏</span> Eksperimen Penggaris Plastik
+                    </h3>
+                    <p class="mb-0">
+                        Mari bayangkan kita memegang penggaris plastik lentur.
+                        <br><br>
+                        <strong>1. Lengkungkan Perlahan:</strong> Tangan kita menekan penggaris itu. Ia melengkung, menyimpan tenaga. Semakin ditekuk, semakin besar tenaganya.<br>
+                        <strong>2. Batas Kelenturan:</strong> Lempeng bumi juga begitu. Mereka saling dorong dan terkunci, melengkung menahan energi selama ratusan tahun.<br>
+                        <strong>3. Pelepasan (Snap!):</strong> Saat batuan tak sanggup lagi menahan, ia akan melenting kembali ke posisi semula. Lentingan itulah yang kita rasakan sebagai <strong>Gempa</strong>.
+                    </p>
+                </div>
+
+                <h3>Tentang "Menunggu Waktu"</h3>
+                <p>
+                    Ketika para ahli mengatakan "tinggal menunggu waktu", mereka sedang berbicara tentang siklus, bukan ramalan kiamat. Ada area yang disebut <strong>Zona Istirahat Panjang</strong> (<em>Seismic Gap</em>)—seperti di Selat Sunda dan Mentawai—yang sudah sangat lama "menabung energi". Secara logika alam, energi tabungan itu suatu saat pasti akan dilepaskan untuk mencapai keseimbangan baru.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 3: Fakta -->
+        <section id="fakta" class="content-card p-8 md:p-10 prose-custom">
+            <h2>Mengenal Dua Tetangga Kita</h2>
+            <p>
+                Agar kita tidak menebak-nebak dalam gelap, mari kita lihat data apa yang sebenarnya sedang diamati oleh para penjaga gawang (ilmuwan) kita.
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Area Pengamatan</th>
+                            <th>Kondisi Saat Ini</th>
+                            <th>Apa Artinya Bagi Kita?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Selat Sunda</strong></td>
+                            <td><span class="inline-block bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full font-bold">Zona Istirahat Panjang</span></td>
+                            <td class="text-sm text-slate-600">
+                                Sudah lama tidak melepas energi. Perlu waspada untuk wilayah pesisir Banten, Lampung, dan Jakarta.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mentawai - Siberut</strong></td>
+                            <td><span class="inline-block bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full font-bold">Zona Istirahat Panjang</span></td>
+                            <td class="text-sm text-slate-600">
+                                "Tidur" lebih dari 200 tahun. Potensi energinya cukup besar untuk wilayah Sumatera Barat.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm text-slate-500 italic bg-slate-50 p-3 rounded">
+                *Catatan: Sains bisa memprediksi <strong>POTENSI</strong> (seberapa besar) dan <strong>LOKASI</strong>, tapi tidak ada teknologi yang bisa memprediksi <strong>KAPAN</strong> (hari/jam) gempa terjadi.
+            </p>
+        </section>
+
+        <!-- Section 4: Bersiap (Mitigasi Diperluas) -->
+        <section id="bersiap" class="content-card p-0 prose-custom">
+            <!-- Image: Peralatan (Updated URL) -->
+            <div class="h-56 w-full overflow-hidden bg-amber-50">
+                <img src="https://images.unsplash.com/photo-1542204637-e67bc7d41e48?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80" 
+                     alt="Perlengkapan persiapan darurat yang tersusun rapi" 
+                     class="w-full h-full object-cover object-center opacity-90">
+            </div>
+
+            <div class="p-8 md:p-10">
+                <h2>Rencana Kita Bersama</h2>
+                <p>
+                    Mengetahui hal ini adalah sebuah keistimewaan. Bayangkan nenek moyang kita dulu tidak memiliki informasi ini. Kita punya kesempatan untuk bersiap. Berikut adalah panduan lengkap kesiapsiagaan yang bisa kita diskusikan di meja makan malam ini.
+                </p>
+
+                <!-- Accordion Mitigasi (Diperluas) -->
+                <div class="space-y-4 mt-8">
+                    
+                    <!-- 1. Saat Gempa - Indoor -->
+                    <details class="group bg-teal-50 rounded-lg border border-teal-100 overflow-hidden" open>
+                        <summary class="text-teal-800">
+                            <span class="flex items-center gap-2">🏠 Saat Gempa Terjadi (Di Dalam Ruangan)</span>
+                            <svg class="icon text-teal-500 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="accordion-content">
+                            <ul class="list-none space-y-2 text-slate-700 mt-0 pl-0">
+                                <li class="flex gap-3">
+                                    <span class="text-amber-500 font-bold">1.</span>
+                                    <span><strong>Drop, Cover, Hold On:</strong> Segera jatuhkan diri ke lantai, berlindung di bawah meja yang kuat, dan pegang kaki meja tersebut. Lindungi kepala dan leher.</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-amber-500 font-bold">2.</span>
+                                    <span><strong>Jauhi Kaca:</strong> Hindari jendela, cermin, atau lemari kaca yang bisa pecah dan melukai.</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-amber-500 font-bold">3.</span>
+                                    <span><strong>Tetap di Dalam:</strong> Jangan lari keluar saat guncangan masih kuat. Puing bangunan yang jatuh adalah penyebab cedera terbesar.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <!-- 2. Saat Gempa - Outdoor -->
+                    <details class="group bg-teal-50 rounded-lg border border-teal-100 overflow-hidden">
+                        <summary class="text-teal-800">
+                            <span class="flex items-center gap-2">🌳 Saat Gempa Terjadi (Di Luar Ruangan)</span>
+                            <svg class="icon text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="accordion-content">
+                            <ul class="list-none space-y-2 text-slate-700 mt-0 pl-0">
+                                <li class="flex gap-3">
+                                    <span class="text-amber-500 font-bold">1.</span>
+                                    <span><strong>Area Terbuka:</strong> Cari area lapang yang jauh dari gedung tinggi, pohon besar, tiang listrik, dan papan reklame.</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-amber-500 font-bold">2.</span>
+                                    <span><strong>Jika Berkendara:</strong> Pinggirkan kendaraan di tempat aman (jauh dari jembatan/baliho), nyalakan lampu hazard, dan tetap di dalam mobil sampai guncangan berhenti.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <!-- 3. Potensi Tsunami -->
+                    <details class="group bg-teal-50 rounded-lg border border-teal-100 overflow-hidden">
+                        <summary class="text-teal-800">
+                            <span class="flex items-center gap-2">🌊 Aturan Emas 20-20-20 (Tsunami)</span>
+                            <svg class="icon text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="accordion-content">
+                            <p class="mb-2">Rumus evakuasi mandiri paling efektif:</p>
+                            <div class="bg-amber-100 p-4 rounded-lg border border-amber-200 text-amber-900 font-medium">
+                                Jika gempa terasa selama <strong>20 detik</strong> atau lebih, Anda punya waktu sekitar <strong>20 menit</strong> untuk evakuasi ke tempat dengan ketinggian minimal <strong>20 meter</strong>.
+                            </div>
+                            <p class="mt-3 text-sm"><strong>PENTING:</strong> Jangan menunggu sirine berbunyi atau air laut surut. Guncangan kuat dan lama adalah peringatan alam terbaik.</p>
+                        </div>
+                    </details>
+
+                    <!-- 4. Tas Siaga -->
+                    <details class="group bg-teal-50 rounded-lg border border-teal-100 overflow-hidden">
+                        <summary class="text-teal-800">
+                            <span class="flex items-center gap-2">🎒 Tas Siaga Bencana (Go-Bag)</span>
+                            <svg class="icon text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="accordion-content">
+                            <p>Siapkan satu tas ransel dekat pintu keluar yang berisi:</p>
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mt-2">
+                                <li class="flex items-center gap-2">✅ Dokumen penting (laminating/plastik)</li>
+                                <li class="flex items-center gap-2">✅ Air minum & Makanan tahan lama</li>
+                                <li class="flex items-center gap-2">✅ Senter & Baterai cadangan</li>
+                                <li class="flex items-center gap-2">✅ Kotak P3K & Obat pribadi</li>
+                                <li class="flex items-center gap-2">✅ Peluit (untuk sinyal pertolongan)</li>
+                                <li class="flex items-center gap-2">✅ Pakaian ganti & Jas hujan</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <!-- 5. Audit Rumah -->
+                    <details class="group bg-teal-50 rounded-lg border border-teal-100 overflow-hidden">
+                        <summary class="text-teal-800">
+                            <span class="flex items-center gap-2">🛠️ Audit Keamanan Rumah</span>
+                            <svg class="icon text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="accordion-content">
+                            <p>Cegah benda jatuh menimpa anggota keluarga:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Paku lemari tinggi ke dinding agar tidak roboh.</li>
+                                <li>Pindahkan benda berat dari rak paling atas ke rak bawah.</li>
+                                <li>Pastikan tempat tidur tidak berada tepat di bawah jendela kaca besar atau lampu gantung berat.</li>
+                                <li>Pastikan jalur keluar rumah tidak terhalang barang-barang.</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <!-- 6. Komunikasi -->
+                    <details class="group bg-teal-50 rounded-lg border border-teal-100 overflow-hidden">
+                        <summary class="text-teal-800">
+                            <span class="flex items-center gap-2">👨‍👩‍👧‍👦 Rencana Komunikasi Keluarga</span>
+                            <svg class="icon text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="accordion-content">
+                            <p>Gempa bisa terjadi saat anggota keluarga terpisah (sekolah/kerja).</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Tentukan satu <strong>Titik Kumpul (Meeting Point)</strong> di luar rumah yang aman.</li>
+                                <li>Sepakati satu kontak darurat keluarga di luar kota yang bisa dihubungi oleh semua anggota keluarga untuk mengabarkan kondisi (jika jaringan lokal sibuk).</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                </div>
+
+                <div class="mt-8 text-center">
+                    <p class="font-medium text-amber-700 bg-amber-50 p-4 rounded-lg inline-block">
+                        "Kita tidak bisa menghentikan ombak, tapi kita bisa belajar berselancar. Kita tidak bisa menyetop gempa, tapi kita bisa membangun ketangguhan."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Glosarium (Kamus) -->
+        <section id="kamus" class="mt-16 mb-8">
+            <h2 class="text-center text-2xl font-bold text-teal-800 mb-8 font-serif">Kamus Kecil</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-6 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition">
+                    <h4 class="font-bold text-teal-700">Megathrust</h4>
+                    <p class="text-sm text-slate-600 mt-2">Area pertemuan antar lempeng raksasa yang berpotensi melepas energi besar.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition">
+                    <h4 class="font-bold text-teal-700">Seismic Gap</h4>
+                    <p class="text-sm text-slate-600 mt-2">Zona "istirahat panjang" di mana gempa besar sudah lama tidak terjadi.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition">
+                    <h4 class="font-bold text-teal-700">Magnitudo</h4>
+                    <p class="text-sm text-slate-600 mt-2">Besaran energi yang dilepaskan gempa. Berbeda dengan kerusakan yang terjadi.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition">
+                    <h4 class="font-bold text-teal-700">Subduksi</h4>
+                    <p class="text-sm text-slate-600 mt-2">Gerakan satu lempeng bumi yang menyusup ke bawah lempeng lainnya.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 4. FOOTER -->
+    <footer class="bg-teal-900 text-teal-100 py-12 mt-12">
+        <div class="max-w-4xl mx-auto px-4 text-center space-y-4">
+            <div class="flex justify-center items-center gap-2 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <span class="font-serif font-bold text-xl">HarmoniBumi</span>
+            </div>
+            <p class="text-sm opacity-80 max-w-md mx-auto">
+                Disajikan untuk mengedukasi dan menemani langkah kesiapsiagaan kita semua. Mari jaga bumi, dan jaga satu sama lain.
+            </p>
+            <div class="pt-8 border-t border-teal-800 text-xs text-teal-400">
+                &copy; 2024 Edukasi Publik. Data merujuk pada informasi umum BMKG.
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT (Interaksi & Proteksi) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 1. LOGIKA MENU MOBILE ---
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Tutup menu saat link diklik
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // --- 2. LOGIKA SCROLL SPY (Navigasi Aktif) ---
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            const updateActiveLink = () => {
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (window.scrollY >= (sectionTop - 150)) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            window.addEventListener('scroll', updateActiveLink);
+
+            // --- 3. LOGIKA PROTEKSI KONTEN (Friendly Warning) ---
+            const warningBox = document.getElementById('protection-warning');
+
+            function showWarning() {
+                warningBox.style.display = 'block';
+                setTimeout(() => {
+                    warningBox.style.display = 'none';
+                }, 2500);
+            }
+
+            // Mencegah Klik Kanan
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showWarning();
+            });
+
+            // Mencegah Shortcut Keyboard
+            document.addEventListener('keydown', (e) => {
+                if (
+                    (e.ctrlKey && (e.key === 'c' || e.key === 'C')) || 
+                    (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || 
+                    (e.ctrlKey && (e.key === 's' || e.key === 'S')) ||
+                    (e.key === 'F12')
+                ) {
+                    e.preventDefault();
+                    showWarning();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
